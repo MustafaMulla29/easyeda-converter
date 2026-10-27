@@ -6,7 +6,7 @@ import { runTscircuitCode } from "tscircuit"
 import crystalRawEasy from "../assets/C5346074.raweasy.json"
 import fourPinCrystalRawEasy from "../assets/C284163.raweasy.json"
 
-test("repro: C5346074 imports as a generic chip component", async () => {
+test("C5346074 imports as a native crystal component", async () => {
   const betterEasy = EasyEdaJsonSchema.parse(crystalRawEasy)
   const result = await convertBetterEasyToTsx({ betterEasy })
   const fourPinBetterEasy = EasyEdaJsonSchema.parse(fourPinCrystalRawEasy)
@@ -14,8 +14,9 @@ test("repro: C5346074 imports as a generic chip component", async () => {
     betterEasy: fourPinBetterEasy,
   })
 
-  expect(result).toContain("<chip")
-  expect(result).toContain("symbol={")
+  expect(result).toContain("<crystal")
+  expect(result).not.toContain("<chip")
+  expect(result).not.toContain("symbol={")
   expect(fourPinResult).toContain("<crystal")
   expect(fourPinResult).toContain('pinVariant="four_pin"')
 
